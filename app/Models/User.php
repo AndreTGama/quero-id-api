@@ -2,43 +2,66 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class user extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, SoftDeletes;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that should show table name.
      *
-     * @var array<int, string>
+     * @var array
+     */
+    protected $table = 'users';
+    /**
+     * fillable
+     *
+     * The attributes that are mass assignable
+     *
+     * @var array
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'bio',
+        'profile_picture',
+        'verified_email',
+        'profile_public',
     ];
-
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be visible in arrays.
      *
-     * @var array<int, string>
+     * @var array
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $visible = [
+        'id',
+        'name',
+        'email',
+        'bio',
+        'profile_picture',
+        'verified_email',
+        'profile_public'
     ];
-
     /**
-     * The attributes that should be cast.
+     * casts
      *
-     * @var array<string, string>
+     * Returns dates with entered formats (d-m-Y H:i)
+     *
+     * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'create_at' => 'date:d-m-Y H:i',
+        'update_at' => 'date:d-m-Y H:i',
+        'deleted_at' => 'date:d-m-Y H:i',
     ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['password'];
 }
