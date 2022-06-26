@@ -47,16 +47,20 @@ class User extends Model
         'profile_public'
     ];
     /**
-     * casts
+     * The storage format of the model's date columns.
      *
-     * Returns dates with entered formats (d-m-Y H:i)
+     * @var string
+     */
+    protected $dateFormat = 'U';
+    /**
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $casts = [
-        'create_at' => 'date:d-m-Y H:i',
-        'update_at' => 'date:d-m-Y H:i',
-        'deleted_at' => 'date:d-m-Y H:i',
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
     /**
      * The attributes that should be hidden for arrays.
