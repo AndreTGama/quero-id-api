@@ -18,7 +18,8 @@ class UserController extends Controller
      */
     public function list() : JsonResponse
     {
-        $user = User::all();
+        // TODO continua daqui -> tentar trazer o tipo de usuário junto com o usuáio
+        $user = User::with(['typeUser'])->get();
 
         if(empty($user)) return ReturnMessage::message(false, 'There no users in Database', null, null, [], 204);
 
@@ -30,7 +31,7 @@ class UserController extends Controller
      * @param  StoreUserRequest $request
      * @return JsonResponse
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request) : JsonResponse
     {
         $data = $request->all();
 
@@ -52,6 +53,8 @@ class UserController extends Controller
     public function show(int $id) : JsonResponse
     {
         $user = User::find($id);
+
+        $user->type_user = $user->typeUser;
 
         if(empty($user)) return ReturnMessage::message(false, 'User not found in Database', null, null, [], 204);
 

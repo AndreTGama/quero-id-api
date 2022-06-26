@@ -49,4 +49,11 @@ class TypeUser extends Model
         'updated_at',
         'deleted_at'
     ];
+    /**
+     * Get the users for the types of users.
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

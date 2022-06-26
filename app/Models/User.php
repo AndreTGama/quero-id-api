@@ -43,10 +43,11 @@ class User extends Model
         'name',
         'email',
         'bio',
-        'type_user_id',
         'profile_picture',
         'verified_email',
-        'profile_public'
+        'profile_public',
+        'type_user_id',
+        'type_user', // Symbolic column to bring the user type information
     ];
     /**
      * The attributes that should be mutated to dates.
@@ -64,4 +65,11 @@ class User extends Model
      * @var array
      */
     protected $hidden = ['password'];
+    /**
+     * Get the type user.
+     */
+    public function typeUser()
+    {
+        return $this->belongsToMany(TypeUser::class, 'users', 'type_user_id');
+    }
 }
