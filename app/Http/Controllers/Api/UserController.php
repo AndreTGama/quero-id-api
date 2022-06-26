@@ -32,9 +32,16 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-       dd($request->all());
+        $data = $request->all();
 
-        return ReturnMessage::message(false,'Users found', null, null, [], 200);
+        $data['password'] = bcrypt($data['password']);
+
+        $user = User::create($data);
+
+        if(empty($user->id)) return ReturnMessage::message(true,'Error creating user', null, null, [], 409);
+
+        return ReturnMessage::message(false,'User created successfully', null, null, null, 201);
+
     }
     /**
      * Show user table information

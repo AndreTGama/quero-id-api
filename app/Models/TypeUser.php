@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class TypeUser extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class User extends Model
      *
      * @var array
      */
-    protected $table = 'users';
+    protected $table = 'types_users';
     /**
      * fillable
      *
@@ -25,13 +25,8 @@ class User extends Model
      */
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'bio',
-        'type_user_id',
-        'profile_picture',
-        'verified_email',
-        'profile_public',
+        'description',
+        'private',
     ];
     /**
      * The attributes that should be visible in arrays.
@@ -41,12 +36,8 @@ class User extends Model
     protected $visible = [
         'id',
         'name',
-        'email',
-        'bio',
-        'type_user_id',
-        'profile_picture',
-        'verified_email',
-        'profile_public'
+        'description',
+        'private',
     ];
     /**
      * The attributes that should be mutated to dates.
@@ -58,10 +49,4 @@ class User extends Model
         'updated_at',
         'deleted_at'
     ];
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = ['password'];
 }
