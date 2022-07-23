@@ -38,6 +38,7 @@ class TypeUser extends Model
         'name',
         'description',
         'private',
+        'users', // Symbolic column to bring the user type information
     ];
     /**
      * The attributes that should be mutated to dates.
@@ -54,6 +55,6 @@ class TypeUser extends Model
      */
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class, 'id', 'type_user_id');
     }
 }

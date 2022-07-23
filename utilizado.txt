@@ -1,0 +1,18 @@
+O que está sendo utilizado
+Framework:
+Laravel;
+
+Banco de dados:
+MySql;
+
+Bibliotecas:
+laravellegends/pt-br-validator;
+
+Técnicas:
+Migrations - https://laravel.com/docs/9.x/migrations
+Factories - https://laravel.com/docs/9.x/database-testing#defining-model-factories
+Seeders - https://laravel.com/docs/9.x/seeding#writing-seeders
+Validation Form Request - https://laravel.com/docs/9.x/validation#form-request-validation
+Validation Rules - https://laravel.com/docs/9.x/validation#custom-validation-rules
+
+O que está sendo utilizado - 10/07
