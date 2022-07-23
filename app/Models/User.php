@@ -42,6 +42,7 @@ class User extends Model
         'id',
         'name',
         'email',
+        'slug',
         'bio',
         'profile_picture',
         'verified_email',
@@ -70,6 +71,6 @@ class User extends Model
      */
     public function typeUser()
     {
-        return $this->belongsToMany(TypeUser::class, 'users', 'type_user_id');
+        return $this->belongsTo(TypeUser::class);
     }
 }
