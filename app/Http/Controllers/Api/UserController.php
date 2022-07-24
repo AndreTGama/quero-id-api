@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,22 @@ class UserController extends Controller
         if(empty($users)) return ReturnMessage::message(false, 'There no users in Database', null, null, [], 204);
 
         return ReturnMessage::message(false,'Users found', null, null, $users, 200);
+    }
+    /**
+     * Show user table information
+     *
+     * @param  int $id
+     * @return JsonResponse
+     */
+    public function show(int $id) : JsonResponse
+    {
+        $user = User::find($id);
+
+        $user->type_user = $user->typeUser;
+
+        if(empty($user)) return ReturnMessage::message(false, 'User not found in Database', null, null, [], 204);
+
+        return ReturnMessage::message(false,'User found', null, null, $user, 200);
     }
     /**
      * list all users in database
@@ -50,6 +67,8 @@ class UserController extends Controller
 
         $data['password'] = bcrypt($data['password']);
 
+        $data['slug'] = $this->countSlug(Str::slug($data['name']));
+
         $user = User::create($data);
 
         if(empty($user->id)) return ReturnMessage::message(true,'Error creating user', null, null, [], 409);
@@ -66,6 +85,10 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, int $id) : JsonResponse
     {
         $data = $request->all();
+
+        if(!empty($data['name'])) $data['slug'] = $this->countUpdateSlug(Str::slug($data['name']), $id);
+
+        if(empty($data['profile_picture'])) $data['profile_picture'] = "profile_picture_default.png";
 
         $user = User::find($id)->update($data);
 
@@ -89,19 +112,64 @@ class UserController extends Controller
 
     }
     /**
-     * Show user table information
+     * restore
      *
      * @param  int $id
      * @return JsonResponse
      */
-    public function show(int $id) : JsonResponse
+    public function restore(int $id) : JsonResponse
+    {
+       $user = User::withTrashed()->find($id)->restore();
+
+        if(!$user) return ReturnMessage::message(true,'Error restore user', null, null, [], 409);
+
+        return ReturnMessage::message(false,'User restored with success', null, null, null, 200);
+    }
+    /**
+     * restoreAll
+     *
+     * @return JsonResponse
+     */
+    public function restoreAll() : JsonResponse
+    {
+        User::onlyTrashed()->restore();
+
+        return ReturnMessage::message(false,'Users restored with success', null, null, null, 200);
+
+    }
+    /**
+     * countSlug
+     *
+     * @param  mixed $slug
+     * @return string
+     */
+    public function countSlug(string $slug) : string
+    {
+        $count = User::where('slug', $slug)->count();
+
+        if($count > 0){
+            $slug = $slug."$count";
+        }
+
+        return $slug;
+    }
+    /**
+     * countUpdateSlug
+     *
+     * @param  string $slug
+     * @param  int $id
+     * @return string
+     */
+    public function countUpdateSlug(string $slug, int $id) : string
     {
         $user = User::find($id);
 
-        $user->type_user = $user->typeUser;
+        if($user->slug == $slug) return $slug;
 
-        if(empty($user)) return ReturnMessage::message(false, 'User not found in Database', null, null, [], 204);
+        $count = User::where('slug', $slug)->count();
 
-        return ReturnMessage::message(false,'User found', null, null, $user, 200);
+        if($count > 0) $slug = $slug."$count";
+
+        return $slug;
     }
 }

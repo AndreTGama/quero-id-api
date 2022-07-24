@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->longText('bio')->nullable();
             $table->string('profile_picture')->default('profile_picture_default.png');
-            $table->unsignedBigInteger('type_user_id');
+            $table->unsignedBigInteger('type_user_id')->default(2);
             $table->foreign('type_user_id')->references('id')->on('types_users');
             $table->boolean('profile_public')->default(1);
             $table->dateTime('email_verified_at')->nullable();

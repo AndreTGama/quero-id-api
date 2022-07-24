@@ -28,6 +28,7 @@ class User extends Model
         'email',
         'password',
         'bio',
+        'slug',
         'type_user_id',
         'profile_picture',
         'verified_email',

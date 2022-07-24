@@ -4,6 +4,7 @@ namespace App\Http\Requests\User;
 
 use App\Rules\User\FullName;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -25,9 +26,11 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required','max:255', new FullName],
-            'email' => 'required|unique:users|max:255',
-            'profile_public' => 'required|boolean'
+            'name' => ['max:255', new FullName],
+            'email' => [
+                Rule::unique('users')->ignore($this->route('id')),
+                'max:255'
+            ]
         ];
     }
     /**
