@@ -9,6 +9,7 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Service\ValidSlug;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -67,7 +68,7 @@ class UserController extends Controller
 
         $data['password'] = bcrypt($data['password']);
 
-        $data['slug'] = $this->countSlug(Str::slug($data['name']));
+        $data['slug'] = ValidSlug::slug('users', Str::slug($data['name']));
 
         $user = User::create($data);
 
@@ -136,22 +137,6 @@ class UserController extends Controller
 
         return ReturnMessage::message(false,'Users restored with success', null, null, null, 200);
 
-    }
-    /**
-     * countSlug
-     *
-     * @param  mixed $slug
-     * @return string
-     */
-    public function countSlug(string $slug) : string
-    {
-        $count = User::where('slug', $slug)->count();
-
-        if($count > 0){
-            $slug = $slug."$count";
-        }
-
-        return $slug;
     }
     /**
      * countUpdateSlug
