@@ -9,7 +9,7 @@ class UsersTest extends TestCase
 {
     use RefreshDatabase;
     /**
-     * A basic functional test example.
+     * A basic functional test example
      *
      * @return void
      */
