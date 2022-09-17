@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $users = User::get();
 
-        if(empty($users)) return ReturnMessage::message(false, 'There no users in Database', null, null, [], 204);
+        if(empty($users)) return ReturnMessage::message(false, 'There no users in Database', null, null, [], 200);
 
         return ReturnMessage::message(false,'Users found', null, null, $users, 200);
     }
@@ -37,9 +37,11 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
+        if(!isset($user)) return ReturnMessage::message(false, 'User not found in Database', null, null, null, 200);
+
         $user->type_user = $user->typeUser;
 
-        if(empty($user)) return ReturnMessage::message(false, 'User not found in Database', null, null, [], 204);
+        if(empty($user)) return ReturnMessage::message(false, 'User not found in Database', null, null, null, 200);
 
         return ReturnMessage::message(false,'User found', null, null, $user, 200);
     }
@@ -52,7 +54,7 @@ class UserController extends Controller
     {
         $users = User::onlyTrashed()->get();
 
-        if($users->isEmpty()) return ReturnMessage::message(false, 'There no users in Database', null, null, [], 204);
+        if($users->isEmpty()) return ReturnMessage::message(false, 'There no users in Database', null, null, [], 200);
 
         return ReturnMessage::message(false,'Users deleted found', null, null, $users, 200);
     }
