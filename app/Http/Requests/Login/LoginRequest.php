@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Login;
 
 use App\Builder\ReturnMessage;
-use App\Rules\User\FullName;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreUserRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +27,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:255', new FullName],
-            'email' => 'required|unique:users|max:255',
+            'email' => 'required|max:255|exists:users',
             'password' => 'required',
         ];
     }
@@ -43,9 +41,8 @@ class StoreUserRequest extends FormRequest
     // public function messages()
     // {
     //     return [
-    //         'name.required' => 'Name field is required',
-    //         'name.max' => 'You passed the maximum character value (value is 255)',
     //         'email.required' => 'E-mail field is required',
+    //         'email.exists' => 'Invalid email or password',
     //         'email.max' => 'You passed the maximum character value (value is 255)',
     //         'password.required' => 'Password field is required'
     //     ];
@@ -59,7 +56,7 @@ class StoreUserRequest extends FormRequest
         $errors = [];
         $messages = $validator->errors()->messages();
 
-        foreach ($messages as $m) {
+        foreach($messages as $m){
             array_push($errors, $m[0]);
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User;
 
 use App\Builder\ReturnMessage;
 use Illuminate\Http\JsonResponse;
@@ -11,9 +11,25 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Service\ValidSlug;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /**
+     * index
+     *
+     * @return JsonResponse
+     */
+    public function index() : JsonResponse
+    {
+        $id = auth()->user()->id;
+
+        $user = User::find($id);
+
+        if(empty($user)) return ReturnMessage::message(false, 'There no user in Database', null, null, [], 200);
+
+        return ReturnMessage::message(false,'Users found', null, null, $user, 200);
+    }
     /**
      * list all users in database
      *

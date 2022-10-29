@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\TypeUser;
 
 use App\Builder\ReturnMessage;
 use App\Http\Controllers\Controller;

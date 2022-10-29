@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\TypeUser;
 
+use App\Builder\ReturnMessage;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreTypeUserRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class StoreTypeUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,13 +34,40 @@ class StoreTypeUserRequest extends FormRequest
     /**
      *
      * @return array
+     * You can use this function (message)
+     * or the other one (failedValidation)
+     * both are correct and working
      */
-    public function messages()
+    // public function messages()
+    // {
+    //     return [
+    //         'name.required' => 'Name field is required',
+    //         'name.max' => 'You passed the maximum character value (value is 255)',
+    //         'description.required' => 'Description field is required',
+    //     ];
+    // }
+    /**
+     *
+     * @return array
+     */
+    public function failedValidation(Validator $validator)
     {
-        return [
-            'name.required' => 'Name field is required',
-            'name.max' => 'You passed the maximum character value (value is 255)',
-            'description.required' => 'Description field is required',
-        ];
+        $errors = [];
+        $messages = $validator->errors()->messages();
+
+        foreach ($messages as $m) {
+            array_push($errors, $m[0]);
+        }
+
+        throw new HttpResponseException(
+            ReturnMessage::message(
+                true,
+                'Something went wrong',
+                'Erro in request',
+                null,
+                $errors,
+                400
+            )
+        );
     }
 }

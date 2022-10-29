@@ -62,3 +62,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Steps to be done
+1. Fisrt of all change the .env.example to .env with your Database information and email
+2. `composer install`
+3. `php artisan migrate: --seed`
+4. `php artisan serve`
+5. `php artisan jwt:secret` 
+6. Routes in this link: https://github.com/AndreTGama/quero-ir-routes
+
+You don't need more than that =D
