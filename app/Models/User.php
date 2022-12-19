@@ -96,4 +96,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(TypeUser::class);
     }
+    /**
+     * Get the users for the types of users.
+     */
+    public function hashsUseds()
+    {
+        return $this->belongsTo(HashsUseds::class, 'id', 'user_id');
+    }
 }
