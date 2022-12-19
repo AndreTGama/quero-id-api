@@ -21,7 +21,7 @@ class ReturnMessage
         bool $error,
         ?string $message,
         ?string $developerMessage,
-        ?\Throwable $exception,
+        ?\Exception $exception,
         $data,
         int $status
     ) : JsonResponse

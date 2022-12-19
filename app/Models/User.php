@@ -34,7 +34,8 @@ class User extends Authenticatable implements JWTSubject
         'profile_picture',
         'verified_email',
         'profile_public',
-        'complete_registration'
+        'complete_registration',
+        'email_verified_at'
     ];
     /**
      * The attributes that should be visible in arrays.

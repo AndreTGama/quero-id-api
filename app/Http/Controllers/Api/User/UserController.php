@@ -175,4 +175,29 @@ class UserController extends Controller
 
         return $slug;
     }
+    /**
+     * activeAccount
+     *
+     * @param  string $slug
+     * @return JsonResponse
+     */
+    public function activeAccount(string $slug) : JsonResponse
+    {
+        try {
+            $user = User::where('slug', $slug)->first();
+
+            if(empty($user))
+                throw new \Exception("User with slug:$slug not found in system");
+
+            if($user->email_verified_at)
+                throw new \Exception("User with slug:$slug is already active");
+
+            $user->update(['email_verified_at' => date('Y-m-d h:i:s')]);
+
+            return ReturnMessage::message(false,'Activated user', 'Activated user', null, null, 200);
+
+        } catch (\Exception $e) {
+            return ReturnMessage::message(false,'User not found', $e->getMessage(), $e, null, 401);
+        }
+    }
 }
