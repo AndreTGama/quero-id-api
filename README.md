@@ -63,6 +63,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
+## Version PHP
+8.2
+
 ## Steps to be done
 1. Fisrt of all change the .env.example to .env with your Database information and email
 2. `composer install`

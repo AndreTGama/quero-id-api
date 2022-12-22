@@ -1,6 +1,7 @@
 O que está sendo utilizado
 Framework:
 Laravel;
+Versão do PHP 8.2;
 
 Banco de dados:
 MySql;
