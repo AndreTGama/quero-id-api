@@ -26,7 +26,7 @@ Route::prefix('login')->group(function () {
 
 Route::prefix('account')->group(function () {
     Route::post('/', [UserController::class, 'store'])->name('users.store');
-    Route::put('/{slug}', [UserController::class, 'activeAccount'])->name('users.active.account');
+    Route::put('/{code}', [UserController::class, 'activeAccount'])->name('users.active.account');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function () {

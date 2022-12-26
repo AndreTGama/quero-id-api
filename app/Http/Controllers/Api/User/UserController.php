@@ -122,7 +122,7 @@ class UserController extends Controller
             $code = uniqid();
             $hashSuccess = HashsUsedsController::storeActiveAccount($user->id, $code);
 
-            if(!$hashSuccess) throw new \Exception('Error generating activation code');
+            if (!$hashSuccess) throw new \Exception('Error generating activation code');
 
             // TODO I'm using Gmail to send it, but it's having a problem with authentication, I'll have to validate it later with another email sending system
             // Mail::send(new \App\Mail\ActiveAccountMail($data['email'], $data['name'], $code));
@@ -231,25 +231,32 @@ class UserController extends Controller
     /**
      * activeAccount
      *
-     * @param  string $slug
+     * @param  string $code
      * @return JsonResponse
      */
-    public function activeAccount(string $slug): JsonResponse
+    public function activeAccount(string $code): JsonResponse
     {
         try {
-            $user = User::where('slug', $slug)->first();
+            DB::beginTransaction();
 
-            if (empty($user))
-                throw new \Exception("User with slug:$slug not found in system");
+            $hashsUseds = HashsUseds::where('hash', $code)->first();
+
+            if (empty($hashsUseds))
+                throw new \Exception("User with code:$code not found in system");
+
+            $user = $hashsUseds->user;
 
             if ($user->email_verified_at)
-                throw new \Exception("User with slug:$slug is already active");
+                throw new \Exception("User with code:$code is already active");
 
             $user->update(['email_verified_at' => date('Y-m-d h:i:s')]);
+            $hashsUseds->delete();
 
+            DB::commit();
             return ReturnMessage::message(false, 'Activated user', 'Activated user', null, null, 200);
         } catch (\Exception $e) {
-            return ReturnMessage::message(false, 'User not found', $e->getMessage(), $e, null, 401);
+            DB::rollBack();
+            return ReturnMessage::message(false, 'Code not found or Used', $e->getMessage(), $e, null, 401);
         }
     }
 }
