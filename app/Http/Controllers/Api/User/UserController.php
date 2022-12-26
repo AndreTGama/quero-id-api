@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Mail\ActiveAccountMail;
 use App\Models\HashsUseds;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -16,6 +17,7 @@ use App\Service\ValidSlug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -119,7 +121,11 @@ class UserController extends Controller
 
             $code = uniqid();
             $hashSuccess = HashsUsedsController::storeActiveAccount($user->id, $code);
+
             if(!$hashSuccess) throw new \Exception('Error generating activation code');
+
+            // TODO I'm using Gmail to send it, but it's having a problem with authentication, I'll have to validate it later with another email sending system
+            // Mail::send(new \App\Mail\ActiveAccountMail($data['email'], $data['name'], $code));
 
             DB::commit();
             return ReturnMessage::message(false, 'User created successfully', null, null, null, 201);
