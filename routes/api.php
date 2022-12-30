@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::prefix('login')->group(function () {
     Route::post('/', [AuthController::class, 'login'])->name('login.login');
 });
@@ -58,9 +54,9 @@ Route::group(['middleware' => ['auth.jwt']], function () {
         Route::delete('/{id}', [UserController::class, 'delete'])->name('users.delete');
     });
 
-    // Route::prefix('type_users')->group(function () {
-    //     Route::get('/', [TypeUserController::class, 'list'])->name('type_users.list');
-    //     Route::post('/', [TypeUserController::class, 'store'])->name('type_users.store');
-    //     Route::get('/{id}', [TypeUserController::class, 'show'])->name('type_users.show');
-    // });
+    Route::prefix('type_users')->group(function () {
+        Route::get('/', [TypeUserController::class, 'list'])->name('type_users.list');
+        Route::post('/', [TypeUserController::class, 'store'])->name('type_users.store');
+        Route::get('/{id}', [TypeUserController::class, 'show'])->name('type_users.show');
+    });
 });
