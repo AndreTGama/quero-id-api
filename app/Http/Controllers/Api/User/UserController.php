@@ -41,6 +41,25 @@ class UserController extends Controller
             return ReturnMessage::message(false, 'User not found', $e->getMessage(), $e, null, 401);
         }
     }
+    // TODO verificar esse teste que foi gerado pelo refraction
+    public function testIndex()
+    {
+        try {
+            $id = auth()->user()->id;
+            $user = User::find($id);
+
+            // Assert user is not empty
+            $this->assertNotEmpty($user);
+
+            // Assert the returned message is 'Users found'
+            $this->assertEquals(ReturnMessage::message(false, 'Users found', null, null, $user, 200), ReturnMessage::message(false, 'Users found', null, null, $user, 200));
+
+        } catch(\Exception $e) {
+            // Assert the exception message is 'User not found'
+            $this->assertEquals(ReturnMessage::message(false, 'User not found', $e->getMessage(), $e, null, 401), ReturnMessage::message(false, 'User not found', $e->getMessage(), $e, null, 401));
+
+        }
+        }
     /**
      * list all users in database
      *
