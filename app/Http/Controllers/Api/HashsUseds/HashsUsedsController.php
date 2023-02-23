@@ -36,4 +36,23 @@ class HashsUsedsController extends Controller
             return false;
         }
     }
+    public static function storeResendActiveAccount(int $idUser, string $code): bool
+    {
+        DB::beginTransaction();
+
+        try {
+            HashsUseds::create([
+                'user_id' => $idUser,
+                'hash' => $code,
+                'type' => HashsUsedsEnum::ActiveAccount
+            ]);
+
+            DB::commit();
+
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return false;
+        }
+    }
 }
