@@ -265,10 +265,12 @@ class UserController extends Controller
 
             $user = $hashsUseds->user;
 
-            if ($user->email_verified_at)
+            if ($user->email_verified_at || $hashsUseds->used)
                 throw new \Exception("User with code:$code is already active");
 
             $user->update(['email_verified_at' => date('Y-m-d h:i:s')]);
+
+            $hashsUseds->update(['used' => true]);
             $hashsUseds->delete();
 
             DB::commit();

@@ -27,6 +27,7 @@ class HashsUseds extends Model
     protected $fillable = [
         'user_id',
         'hash',
+        'used',
         'type',
     ];
     /**
