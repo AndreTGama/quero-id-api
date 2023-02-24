@@ -7,6 +7,7 @@ use App\Enums\HashsUsedsEnum;
 use App\Http\Controllers\Api\HashsUseds\HashsUsedsController;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Account\ResendCodeRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Mail\ActiveAccountMail;
@@ -279,5 +280,13 @@ class UserController extends Controller
             DB::rollBack();
             return ReturnMessage::message(false, 'Code not found or Used', $e->getMessage(), $e, null, 401);
         }
+    }
+    public function resendCode(ResendCodeRequest $request) : JsonResponse
+    {
+        dd( $request);
+        $code = uniqid();
+
+        // HashsUsedsController::storeActiveAccount($user->id, $code);
+        dd();
     }
 }

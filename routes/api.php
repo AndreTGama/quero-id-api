@@ -23,6 +23,7 @@ Route::prefix('login')->group(function () {
 Route::prefix('account')->group(function () {
     Route::post('/', [UserController::class, 'store'])->name('users.store');
     Route::put('/{code}', [UserController::class, 'activeAccount'])->name('users.active.account');
+    Route::post('/resend-code', [UserController::class, 'resendCode'])->name('users.resend.account');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function () {

@@ -40,11 +40,14 @@ class HashsUsedsController extends Controller
     {
         DB::beginTransaction();
 
+        $usersHashs = HashsUseds::where('user_id', $idUser)->select('id')->get();
+        dd($usersHashs);
+        
         try {
             HashsUseds::create([
                 'user_id' => $idUser,
                 'hash' => $code,
-                'type' => HashsUsedsEnum::ActiveAccount
+                'type' => HashsUsedsEnum::ResendActiveAccount
             ]);
 
             DB::commit();
