@@ -40,8 +40,16 @@ class HashsUsedsController extends Controller
     {
         DB::beginTransaction();
 
-        $usersHashs = HashsUseds::where('user_id', $idUser)->select('id')->get();
-        dd($usersHashs);
+        $usersHashs = HashsUseds::select('id')
+            ->where('user_id', $idUser)
+            ->select('id')
+            ->get();
+
+        if(!empty($usersHashs)){
+            foreach($usersHashs as $uh) {
+                $uh->delete();
+            }
+        }
         
         try {
             HashsUseds::create([

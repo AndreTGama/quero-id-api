@@ -144,8 +144,7 @@ class UserController extends Controller
 
             if (!$hashSuccess) throw new \Exception('Error generating activation code');
 
-            // TODO I'm using Gmail to send it, but it's having a problem with authentication, I'll have to validate it later with another email sending system
-            // Mail::send(new \App\Mail\ActiveAccountMail($data['email'], $data['name'], $code));
+            Mail::send(new \App\Mail\ActiveAccountMail($data['email'], $data['name'], $code));
 
             DB::commit();
             return ReturnMessage::message(false, 'User created successfully', null, null, null, 201);
@@ -281,12 +280,31 @@ class UserController extends Controller
             return ReturnMessage::message(false, 'Code not found or Used', $e->getMessage(), $e, null, 401);
         }
     }
+    /**
+     * resendCode
+     *
+     * @param  ResendCodeRequest $request
+     * @return JsonResponse
+     */
     public function resendCode(ResendCodeRequest $request) : JsonResponse
     {
-        dd( $request);
-        $code = uniqid();
+        try {
+            DB::beginTransaction();
+            $user = User::where('email', $request->email)->first();
 
-        // HashsUsedsController::storeActiveAccount($user->id, $code);
-        dd();
+            $code = uniqid();
+
+            $sendHash = HashsUsedsController::storeResendActiveAccount($user->id, $code);
+
+            if(!$sendHash)
+                throw new \Exception('Error sending code');
+
+            DB::commit();
+            return ReturnMessage::message(false, 'Code sending', 'Code sending', null, null, 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ReturnMessage::message(false, 'Error sending code', $e->getMessage(), $e, null, 401);
+        }
     }
 }

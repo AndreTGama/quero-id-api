@@ -41,7 +41,8 @@ class ActiveAccountMail extends Mailable
         return $this->view('mail.activeaccountmail', [
             'email' => $this->email,
             'name' => $this->name,
-            'code' => $url
+            'url' => $url,
+            'code' => $this->code
         ]);
     }
 }

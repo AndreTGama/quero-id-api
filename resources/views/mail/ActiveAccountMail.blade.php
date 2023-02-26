@@ -27,7 +27,8 @@
                     <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Welcome to <b>{{ env('APP_NAME') }}</b></h1>
                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">This is a system for people who want to learn more about the places they want to go.</p>
                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">To activate your account just press the link below, you will be redirected to the account activation page</p>
-                    <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a target="_blank" href={{ $code }} style="color:#ee4c50;text-decoration:underline;">Activate my account</a></p>
+                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Your code to activate the account is <b>{{$code}}</b></p>
+                    <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a target="_blank" href={{ $url }} style="color:#ee4c50;text-decoration:underline;">Activate my account</a></p>
                   </td>
                 </tr>
               </table>
