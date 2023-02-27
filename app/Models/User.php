@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class user extends Model
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, SoftDeletes;
 
@@ -28,9 +29,13 @@ class user extends Model
         'email',
         'password',
         'bio',
+        'slug',
+        'type_user_id',
         'profile_picture',
         'verified_email',
         'profile_public',
+        'complete_registration',
+        'email_verified_at'
     ];
     /**
      * The attributes that should be visible in arrays.
@@ -41,22 +46,23 @@ class user extends Model
         'id',
         'name',
         'email',
+        'slug',
         'bio',
         'profile_picture',
         'verified_email',
-        'profile_public'
+        'profile_public',
+        'type_user_id',
+        'type_user', // Symbolic column to bring the user type information
     ];
     /**
-     * casts
-     *
-     * Returns dates with entered formats (d-m-Y H:i)
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $casts = [
-        'create_at' => 'date:d-m-Y H:i',
-        'update_at' => 'date:d-m-Y H:i',
-        'deleted_at' => 'date:d-m-Y H:i',
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -64,4 +70,37 @@ class user extends Model
      * @var array
      */
     protected $hidden = ['password'];
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+    /**
+     * Get the type user.
+     */
+    public function typeUser()
+    {
+        return $this->belongsTo(TypeUser::class);
+    }
+    /**
+     * Get the users for the types of users.
+     */
+    public function hashsUseds()
+    {
+        return $this->belongsTo(HashsUseds::class, 'id', 'user_id');
+    }
 }

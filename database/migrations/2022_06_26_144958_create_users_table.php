@@ -17,11 +17,14 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('email', 255)->unique();
+            $table->string('slug', 260)->unique();
             $table->string('password');
-            $table->longText('bio');
+            $table->longText('bio')->nullable();
             $table->string('profile_picture')->default('profile_picture_default.png');
-            $table->dateTime('email_verified_at')->nullable();
+            $table->unsignedBigInteger('type_user_id')->default(2);
+            $table->foreign('type_user_id')->references('id')->on('types_users');
             $table->boolean('profile_public')->default(1);
+            $table->dateTime('email_verified_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

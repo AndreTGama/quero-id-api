@@ -1,0 +1,34 @@
+O que está sendo utilizado
+Framework:
+Laravel;
+Versão do PHP 8.2;
+
+Banco de dados:
+MySql;
+
+Bibliotecas / Documentação:
+laravellegends/pt-br-validator / https://github.com/LaravelLegends/pt-br-validator;
+tymon/jwt-auth / https://jwt-auth.readthedocs.io/en/develop/laravel-installation/;
+
+
+Técnicas:
+Migrations - https://laravel.com/docs/9.x/migrations
+Factories - https://laravel.com/docs/9.x/database-testing#defining-model-factories
+Seeders - https://laravel.com/docs/9.x/seeding#writing-seeders
+Validation Form Request - https://laravel.com/docs/9.x/validation#form-request-validation
+Validation Rules - https://laravel.com/docs/9.x/validation#custom-validation-rules
+
+Processo:
+
+Nos primeiros dias foi feito as migrations das tabelas 'Users' e 'TypeUsers', logo depois disso foi criado
+as routes dos CRUD's dessas tabela. Nas function de cadastros e atualizações, está chamando as classes
+Resquest* (cada um com sua regra);
+
+Está sendo colocado usada o JWT-Auth para poder retorno as informações dos usuários em criptografia
+e armazenar, com isso assim que for feito os middlewares, posso colocar para os usuário acessarem somente
+as 'routes' se ele estiver logado;
+
+
+Explicações:
+Request*: Classes que estão dentro app\Http\Requests, cada classe terá as regras e validações de cada post
+e put que será feito no sistema
