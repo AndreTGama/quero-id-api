@@ -69,4 +69,52 @@ class LoginTest extends TestCase
 
         $response->assertStatus(200);
     }
+    /** @test */
+    public function login_error_email()
+    {
+        TypeUser::create([
+            'name' =>'Admin',
+            'description' => 'User who will have access to all features in the system'
+        ]);
+
+        User::create([
+            'name' => 'name',
+            'email' => 'email@mail.com.br',
+            'slug' => Str::slug('name'),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'email_verified_at' => now(),
+            'type_user_id' => 1,
+        ]);
+
+        $response = $this->post('/api/login', [
+            "email" => "email@email.com.br",
+            "password" => "password"
+        ]);
+
+        $response->assertStatus(400);
+    }
+    /** @test */
+    public function login_error_password()
+    {
+        TypeUser::create([
+            'name' =>'Admin',
+            'description' => 'User who will have access to all features in the system'
+        ]);
+
+        User::create([
+            'name' => 'name',
+            'email' => 'email@mail.com.br',
+            'slug' => Str::slug('name'),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'email_verified_at' => now(),
+            'type_user_id' => 1,
+        ]);
+
+        $response = $this->post('/api/login', [
+            "email" => "email@mail.com.br",
+            "password" => "password123"
+        ]);
+
+        $response->assertStatus(401);
+    }
 }
