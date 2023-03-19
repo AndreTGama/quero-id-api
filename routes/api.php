@@ -26,6 +26,14 @@ Route::prefix('account')->group(function () {
     Route::post('/resend-code', [UserController::class, 'resendCode'])->name('users.resend.account');
 });
 
+Route::prefix('users')->group(function () {
+    Route::get('/my-profile', [UserController::class, 'index'])->name('users.my-profile');
+    Route::get('/', [UserController::class, 'list'])->name('users.list');
+    Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/{id}', [UserController::class, 'delete'])->name('users.delete');
+});
+
 Route::group(['middleware' => ['auth.jwt']], function () {
 
     Route::group(['middleware' => ['auth.type.user:1']], function () {
