@@ -18,13 +18,7 @@ class AccountTest extends TestCase
      */
     public function test_create_account()
     {
-        TypeUser::create([
-            'name' =>'Admin',
-            'description' => 'User who will have access to all features in the system'
-        ], [
-            'name' =>'User',
-            'description' => 'User who will have access to all features in the system'
-        ]);
+        \App\Models\TypeUser::factory(2)->create();
 
         $response = $this->post('/api/account', [
             "name" => "Andre Gama",
