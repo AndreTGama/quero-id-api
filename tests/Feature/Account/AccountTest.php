@@ -6,11 +6,11 @@ use App\Models\TypeUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AccountTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      *
@@ -26,7 +26,6 @@ class AccountTest extends TestCase
             "password" => "123@Mudar"
         ]);
 
-        dd($response);
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 }
