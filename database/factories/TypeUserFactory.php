@@ -16,8 +16,8 @@ class TypeUserFactory extends Factory
     public function definition()
     {
         $name = $this->faker->name();
-        $text = $this->faker->text(255);
-        $private = rand(1,2);
+        $text = $this->faker->text(500);
+        $private = 2;
 
         return [
             'name' => $name,
